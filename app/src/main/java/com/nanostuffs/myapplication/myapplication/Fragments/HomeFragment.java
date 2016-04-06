@@ -1,4 +1,10 @@
-package com.nanostuffs.myapplication;
+package com.nanostuffs.myapplication.myapplication.Fragments;
+
+
+
+/**
+ * Created by acer on 4/5/2016.
+ */
 
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -8,7 +14,6 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.PointF;
 import android.media.ExifInterface;
@@ -16,21 +21,25 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.support.v4.app.Fragment;
 import android.view.Display;
 import android.view.GestureDetector;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.View.OnTouchListener;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.nanostuffs.myapplication.R;
+import com.nanostuffs.myapplication.myapplication.Activity.Main2Activity;
 import com.soundcloud.android.crop.Crop;
 
 import java.io.File;
@@ -39,7 +48,10 @@ import java.io.IOException;
 import java.util.Calendar;
 
 
-public class MainActivity extends Activity implements OnClickListener {
+public class HomeFragment extends Fragment {
+
+
+
 
     float[] lastEvent = null;
     float d = 0f;
@@ -84,7 +96,7 @@ public class MainActivity extends Activity implements OnClickListener {
     static Dialog dialog;
 
     private GestureDetector gestureDetector;
-    OnTouchListener gestureListener;
+    View.OnTouchListener gestureListener;
     Intent go;
     RelativeLayout l;
     ImageView testImg;
@@ -94,19 +106,37 @@ public class MainActivity extends Activity implements OnClickListener {
     private Uri uri = null;
     int device_width, device_height;
     String msg = "";
-    private android.widget.RelativeLayout.LayoutParams layoutParams;
+    Main2Activity mActivity;
+
+    public HomeFragment(Main2Activity activity) {
+        // Required empty public constructor
+        mActivity = activity;
+    }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        testImg = (ImageView) findViewById(R.id.tv);
-        Display mDisplay = getWindowManager().getDefaultDisplay();
+        setHasOptionsMenu(true);
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+
+        View rootView = inflater.inflate(R.layout.fragment_home, container, false);
+
+
+
+
+
+
+        testImg = (ImageView) rootView.findViewById(R.id.tv);
+        Display mDisplay = getActivity().getWindowManager().getDefaultDisplay();
         device_width = mDisplay.getWidth();
-        text = (TextView) findViewById(R.id.text);
+        text = (TextView) rootView.findViewById(R.id.text);
         device_height = mDisplay.getHeight();
-        ImageButton plus = (ImageButton) findViewById(R.id.imageButton);
-        plus.setOnClickListener(this);
-        testImg.setOnTouchListener(new OnTouchListener() {
+
+        testImg.setOnTouchListener(new View.OnTouchListener() {
 
             @Override
             public boolean onTouch(View v, MotionEvent event) {
@@ -238,71 +268,9 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         });
 
-    }
 
-    public Bitmap combineImages(Bitmap c, Bitmap s) { // can add a 3rd parameter
-        // 'String loc' if you
-        // want to save the new
-        // image - left some
-        // code to do that at
-        // the bottom
-        Bitmap cs = null;
-
-        int width, height = 0;
-
-        if (c.getWidth() > s.getWidth()) {
-            width = c.getWidth();
-            height = c.getHeight() + s.getHeight();
-        } else {
-            width = s.getWidth();
-            height = c.getHeight() + s.getHeight();
-        }
-
-        cs = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-
-        Canvas comboImage = new Canvas(cs);
-
-        comboImage.drawBitmap(c, 0f, 0f, null);
-        comboImage.drawBitmap(s, 0f, c.getHeight(), null);
-
-        // this is an extra bit I added, just incase you want to save the new
-        // image somewhere and then return the location
-        /*
-         * String tmpImg = String.valueOf(System.currentTimeMillis()) + ".png";
-		 * 
-		 * OutputStream os = null; try { os = new FileOutputStream(loc +
-		 * tmpImg); cs.compress(CompressFormat.PNG, 100, os); }
-		 * catch(IOException e) { Log.e("combineImages",
-		 * "problem combining images", e); }
-		 */
-
-        return cs;
-    }
-
-    /*
-     * //Method of creating mask runtime public void makeMaskImage(ImageView
-     * mImageView, int mContent) { Bitmap original =
-     * BitmapFactory.decodeResource(getResources(), mContent); Bitmap mask =
-     * BitmapFactory.decodeResource(getResources(),R.drawable.mask); Bitmap
-     * result = Bitmap.createBitmap(mask.getWidth(), mask.getHeight(),
-     * Config.ARGB_8888); Canvas mCanvas = new Canvas(result); Paint paint = new
-     * Paint(Paint.ANTI_ALIAS_FLAG); paint.setXfermode(new
-     * PorterDuffXfermode(PorterDuff.Mode.DST_IN)); mCanvas.drawBitmap(original,
-     * 0, 0, null); mCanvas.drawBitmap(mask, 0, 0, paint);
-     * paint.setXfermode(null); mImageView.setImageBitmap(result);
-     * mImageView.setScaleType(ScaleType.CENTER);
-     * mImageView.setBackgroundResource(R.drawable.frame); }
-     */
-    @Override
-    public void onClick(View v) {
-        // TODO Auto-generated method stub
-        switch (v.getId()) {
-            case R.id.imageButton:
-                showMainDialog();
-                break;
-            default:
-                break;
-        }
+        // Inflate the layout for this fragment
+        return rootView;
     }
 
     private float rotation(MotionEvent event) {
@@ -325,8 +293,39 @@ public class MainActivity extends Activity implements OnClickListener {
         point.set(x / 2, y / 2);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle action bar item clicks here. The action bar will
+        // automatically handle clicks on the Home/Up button, so long
+        // as you specify a parent activity in AndroidManifest.xml.
+        int id = item.getItemId();
+
+
+        if (id == R.id.action_search) {
+            showMainDialog();
+            return true;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+    }
+
+
+
+
+
     private void showPictureDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle("CHOOSE PICTURE");
         String[] items = {"GALLERY", "CAMERA"};
 
@@ -350,7 +349,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void showMainDialog() {
-        AlertDialog.Builder dialog = new AlertDialog.Builder(this);
+        AlertDialog.Builder dialog = new AlertDialog.Builder(getActivity());
         dialog.setTitle("SELECT ONE OF FOLLWOING");
         String[] items = {"TEXT", "IMAGE"};
 
@@ -362,7 +361,7 @@ public class MainActivity extends Activity implements OnClickListener {
                 switch (which) {
                     case 0:
                         dialog_edit();
-                    break;
+                        break;
                     case 1:
                         text.setText("");
                         showPictureDialog();
@@ -376,9 +375,9 @@ public class MainActivity extends Activity implements OnClickListener {
 
     private void choosePhotoFromGallary() {
         Intent i = new Intent(Intent.ACTION_PICK,
-                android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        mActivity.startActivityForResult(i, CHOOSE_PHOTO, getString(R.string.title_home));
 
-        startActivityForResult(i, CHOOSE_PHOTO);
 
     }
 
@@ -404,19 +403,19 @@ public class MainActivity extends Activity implements OnClickListener {
             }
         }
         uri = Uri.fromFile(file);
-        Intent i = new Intent(android.provider.MediaStore.ACTION_IMAGE_CAPTURE);
+        Intent i = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         i.putExtra(MediaStore.EXTRA_OUTPUT, uri);
-        startActivityForResult(i, TAKE_PHOTO);
+        mActivity.startActivityForResult(i, TAKE_PHOTO);
     }
 
     public void dialog_edit() {
 
 
-        AlertDialog.Builder alertDialog = new AlertDialog.Builder(MainActivity.this);
+        AlertDialog.Builder alertDialog = new AlertDialog.Builder(getActivity());
 
         alertDialog.setMessage("Type Here");
 
-        final EditText input = new EditText(MainActivity.this);
+        final EditText input = new EditText(getActivity());
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
                 LinearLayout.LayoutParams.MATCH_PARENT,
                 LinearLayout.LayoutParams.MATCH_PARENT);
@@ -443,7 +442,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // TODO Auto-generated method stub
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode) {
@@ -456,19 +455,19 @@ public class MainActivity extends Activity implements OnClickListener {
                         beginCrop(uri);
 
                     } else {
-                        Toast.makeText(this, "unable to select image",
+                        Toast.makeText(getActivity(), "unable to select image",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
                 break;
             case TAKE_PHOTO:
-                if (resultCode == RESULT_OK) {
+                if (resultCode == getActivity().RESULT_OK) {
                     if (uri != null) {
                         beginCrop(uri);
 
 
                     } else {
-                        Toast.makeText(this, "unable to select image",
+                        Toast.makeText(getActivity(), "unable to select image",
                                 Toast.LENGTH_LONG).show();
                     }
                 }
@@ -491,13 +490,13 @@ public class MainActivity extends Activity implements OnClickListener {
                 .getExternalStorageDirectory(), (Calendar.getInstance()
                 .getTimeInMillis() + ".jpg")));
         new Crop(source).output(outputUri).asSquare().withMaxSize(80, 80)
-                .start(this);
+                .start(getActivity());
 
     }
 
     private String getRealPathFromURI(Uri contentURI) {
         String result;
-        Cursor cursor = getContentResolver().query(contentURI, null, null,
+        Cursor cursor = getActivity().getContentResolver().query(contentURI, null, null,
                 null, null);
 
         if (cursor == null) { // Source is Dropbox or other similar local file
@@ -514,7 +513,7 @@ public class MainActivity extends Activity implements OnClickListener {
     }
 
     private void handleCrop(int resultCode, Intent result) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == getActivity().RESULT_OK) {
 
             filePath = getRealPathFromURI(Crop.getOutput(result));
 
@@ -559,7 +558,7 @@ public class MainActivity extends Activity implements OnClickListener {
 
 
         } else if (resultCode == Crop.RESULT_ERROR) {
-            Toast.makeText(this, Crop.getError(result).getMessage(),
+            Toast.makeText(getActivity(), Crop.getError(result).getMessage(),
                     Toast.LENGTH_SHORT).show();
         }
     }
@@ -587,5 +586,7 @@ public class MainActivity extends Activity implements OnClickListener {
             e.printStackTrace();
         }
     }
+
+
 
 }

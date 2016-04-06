@@ -1,3 +1,45 @@
 <resources>
     <string name="app_name">My Application</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="action_settings">Settings</string>
+
+
+    <!-- navigation drawer -->
+    <string name="action_search">Search</string>
+    <string name="drawer_open">Open</string>
+    <string name="drawer_close">Close</string>
+
+    <string name="nav_item_home">Home</string>
+    <string name="nav_item_customise">Customise</string>
+    <string name="nav_item_browse_categories">Browse Categories</string>
+    <string name="nav_item_post_project">Post a Project</string>
+    <string name="nav_item_my_likes">My Likes</string>
+    <string name="nav_item_my_chats">My Chats</string>
+    <string name="nav_item_my_purchases">My Purchases</string>
+
+    <!-- navigation drawer item labels  -->
+    <string-array name="nav_drawer_labels">
+        <item>@string/nav_item_home</item>
+        <item>@string/nav_item_customise</item>
+        <item>@string/nav_item_browse_categories</item>
+        <item>@string/nav_item_post_project</item>
+        <item>@string/nav_item_my_likes</item>
+        <item>@string/nav_item_my_chats</item>
+        <item>@string/nav_item_my_purchases</item>
+    </string-array>
+
+
+    <string name="title_post_project">Post a Project</string>
+    <string name="title_my_likes">My Likes</string>
+    <string name="title_my_chats">My Chats</string>
+    <string name="title_my_purchases">My Purchases</string>
+    <string name="title_browse_categories">Browse Categories</string>
+    <string name="title_customise">Customise</string>
+    <string name="title_home">Home</string>
+
+
 </resources>
